@@ -520,14 +520,38 @@ export default function App() {
     return norm.includes('coming') || norm.includes('comming') || norm.includes('soon') || norm.includes('future') || norm.includes('roadmap');
   };
 
-  const releasedLogs = logs.filter(item => !isComingSoonVal(item.status));
-  const comingSoonLogs = logs.filter(item => isComingSoonVal(item.status));
+  // Helper to compare two version strings in descending order (highest/latest first)
+  const compareVersions = (a: string, b: string) => {
+    const cleanA = a.toLowerCase().replace(/^v/, '');
+    const cleanB = b.toLowerCase().replace(/^v/, '');
+    
+    const partsA = cleanA.split(/[.-]/).map(p => parseInt(p, 10));
+    const partsB = cleanB.split(/[.-]/).map(p => parseInt(p, 10));
+    
+    const maxLen = Math.max(partsA.length, partsB.length);
+    for (let i = 0; i < maxLen; i++) {
+      const valA = isNaN(partsA[i]) ? 0 : partsA[i];
+      const valB = isNaN(partsB[i]) ? 0 : partsB[i];
+      if (valA !== valB) {
+        return valB - valA; // Descending
+      }
+    }
+    return cleanB.localeCompare(cleanA);
+  };
 
-  // Find the log that matches versionId, or default to the last released log (newest in sheet), or first log
+  const releasedLogs = logs
+    .filter(item => !isComingSoonVal(item.status))
+    .sort((a, b) => compareVersions(a.version, b.version));
+
+  const comingSoonLogs = logs
+    .filter(item => isComingSoonVal(item.status))
+    .sort((a, b) => compareVersions(a.version, b.version));
+
+  // Find the log that matches versionId, or default to the newest released log
   const matchedLog = releasedLogs.find(
     l => l.version.toLowerCase() === versionId.toLowerCase() || 
          l.version.toLowerCase().replace(/^v/, '') === versionId.toLowerCase().replace(/^v/, '')
-  ) || releasedLogs[releasedLogs.length - 1] || releasedLogs[0];
+  ) || releasedLogs[0];
 
   // Fetch verified users list and download link dynamically with polling
   useEffect(() => {
