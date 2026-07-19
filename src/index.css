@@ -1,0 +1,262 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+body {
+  background-color: #000000;
+  color: #f3f4f6;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar to match theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #030712;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e3a8a;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}
+
+/* Advanced CSS Keyframes */
+@keyframes sweep {
+  0% {
+    transform: translateX(-150%) skewX(-15deg);
+  }
+  50% {
+    transform: translateX(150%) skewX(-15deg);
+  }
+  100% {
+    transform: translateX(150%) skewX(-15deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-150%) skewX(-12deg);
+  }
+  100% {
+    transform: translateX(150%) skewX(-12deg);
+  }
+}
+
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+}
+
+@keyframes float-reverse {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(6px) rotate(-1deg);
+  }
+}
+
+@keyframes orbit {
+  0% {
+    transform: rotate(0deg) translateX(40px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(40px) rotate(-360deg);
+  }
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.1);
+  }
+}
+
+/* 3D Shining button utility */
+.shining-button-3d {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 
+    0 12px 20px -5px rgba(30, 58, 138, 0.5),
+    0 4px 6px -2px rgba(30, 58, 138, 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.2),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.4);
+  transform-style: preserve-3d;
+}
+
+.shining-button-3d:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 
+    0 20px 30px -5px rgba(59, 130, 246, 0.6),
+    0 10px 15px -5px rgba(59, 130, 246, 0.4),
+    inset 0 2px 6px rgba(255, 255, 255, 0.3),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.shining-button-3d:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 
+    0 4px 6px -1px rgba(30, 58, 138, 0.5),
+    inset 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.shining-button-3d::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: none;
+}
+
+.shining-button-3d:hover::before {
+  animation: shimmer 1.5s infinite;
+}
+
+.shining-button-3d-continuous::before {
+  animation: shimmer 3s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Secondary dark 3D button */
+.shining-button-3d-secondary {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 
+    0 8px 16px -4px rgba(0, 0, 0, 0.5),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.6);
+  transform-style: preserve-3d;
+}
+
+.shining-button-3d-secondary:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 
+    0 16px 24px -4px rgba(0, 0, 0, 0.6),
+    0 0 15px rgba(255, 255, 255, 0.05),
+    inset 0 1px 3px rgba(255, 255, 255, 0.15),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.shining-button-3d-secondary:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.5),
+    inset 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.shining-button-3d-secondary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+  transform: skewX(-20deg);
+}
+
+.shining-button-3d-secondary:hover::before {
+  animation: shimmer 1.5s infinite;
+}
+
+/* Beautiful dynamic neon card style */
+.logo-3d-fancy-released {
+  text-shadow: 
+    0 1px 0 #047857, 
+    0 2px 0 #065f46, 
+    0 3px 0 #064e3b, 
+    0 4px 0 #022c22, 
+    0 8px 16px rgba(16, 185, 129, 0.4);
+}
+
+.logo-3d-fancy-comingsoon {
+  text-shadow: 
+    0 1px 0 #1d4ed8, 
+    0 2px 0 #1e40af, 
+    0 3px 0 #1e3a8a, 
+    0 4px 0 #172554, 
+    0 8px 16px rgba(59, 130, 246, 0.4);
+}
+
+.heading-3d-container {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.heading-3d-card {
+  transform: rotateX(8deg);
+  transition: transform 0.3s ease;
+  box-shadow: 
+    0 15px 35px -5px rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px rgba(255, 255, 255, 0.1),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.heading-3d-card:hover {
+  transform: rotateX(2deg) translateY(-2px);
+}
+
+.neon-depth-card {
+  position: relative;
+  background: rgba(10, 10, 10, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(20px);
+  box-shadow: 
+    0 10px 40px -15px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.neon-depth-card::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01) 40%, rgba(59, 130, 246, 0) 60%, rgba(59, 130, 246, 0.12));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Animated geometric background particles */
+.ambient-particle {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}

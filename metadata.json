@@ -1,0 +1,6 @@
+{
+  "name": "Life OS Portal",
+  "description": "Download hub and updates portal for the Life OS Android app. Secure login access for verified users.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
