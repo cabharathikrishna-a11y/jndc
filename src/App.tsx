@@ -57,6 +57,12 @@ export interface LogItem {
 
 const DEFAULT_LOGS: LogItem[] = [];
 
+// Authorized whitelist emails
+const ALLOWED_EMAILS = [
+  'cabharathikrishna@gmail.com',
+  'bhavani.2633@gmail.com',
+];
+
 function parseCSVText(text: string): LogItem[] {
   if (!text || !text.trim()) return [];
   
@@ -492,7 +498,7 @@ export default function App() {
   const [user, setUser] = useState<User | null>(null);
   const [isVerifying, setIsVerifying] = useState(false);
   const [isAuthLoading, setIsAuthLoading] = useState(false);
-  const [isVerified, setIsVerified] = useState(true);
+  const [isVerified, setIsVerified] = useState(false);
   const [downloadUrl, setDownloadUrl] = useState<string>('');
   const [versionId, setVersionId] = useState<string>('v1.0.27');
   const [blogsOpen, setBlogsOpen] = useState(false);
@@ -661,8 +667,18 @@ export default function App() {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
         setUser(firebaseUser);
+        const email = (firebaseUser.email || '').toLowerCase().trim();
+        const allowed = ALLOWED_EMAILS.some(e => e.toLowerCase().trim() === email);
+        if (allowed) {
+          setIsVerified(true);
+          setErrorMessage('');
+        } else {
+          setIsVerified(false);
+          setErrorMessage(`Access Restricted: "${firebaseUser.email || 'This account'}" is not on the authorized whitelist. Please sign in with an authorized account.`);
+        }
       } else {
         setUser(null);
+        setIsVerified(false);
       }
       setIsAuthLoading(false);
     });
@@ -675,7 +691,16 @@ export default function App() {
     setErrorMessage('');
     setIsAuthLoading(true);
     try {
-      await signInWithPopup(auth, googleProvider);
+      const result = await signInWithPopup(auth, googleProvider);
+      const email = (result.user.email || '').toLowerCase().trim();
+      const allowed = ALLOWED_EMAILS.some(e => e.toLowerCase().trim() === email);
+      if (allowed) {
+        setIsVerified(true);
+        setErrorMessage('');
+      } else {
+        setIsVerified(false);
+        setErrorMessage(`Access Restricted: "${result.user.email}" is not on the authorized whitelist. Please sign in with an authorized account.`);
+      }
     } catch (err: any) {
       console.error('Google Sign In Error:', err);
       if (err.code === 'auth/popup-blocked') {
@@ -692,6 +717,9 @@ export default function App() {
   const handleLogout = async () => {
     try {
       await signOut(auth);
+      setUser(null);
+      setIsVerified(false);
+      setErrorMessage('');
       setDownloadStarted(false);
     } catch (err) {
       console.error('Logout error:', err);
